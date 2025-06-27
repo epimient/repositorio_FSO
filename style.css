@@ -77,7 +77,7 @@ main {
 
 /* Ajustes para la cabecera fija */
 body {
-    padding-top: 70px; /* Ajusta este valor si la altura de tu cabecera cambia */
+    padding-top: 75px; /* Ajusta este valor si la altura de tu cabecera cambia */
 }
 
 header {
