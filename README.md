@@ -32,8 +32,6 @@ Primero, necesitas hacer que tu documento de Google sea públicamente accesible 
 4.  Haz clic en el botón azul que dice **Publicar** y acepta la confirmación.
 5.  Copia el enlace que se genera. Este es el enlace que usaremos.
 
-![Guía para publicar en la web](https://i.imgur.com/5aP2pBC.png)
-
 ### Paso 2: Añadir la Práctica al Fichero `script.js`
 
 A continuación, debes informar al sitio web sobre esta nueva práctica añadiéndola a la lista principal.
