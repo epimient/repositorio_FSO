@@ -1,0 +1,106 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Detrás del navbar pero encima del contenido */
+    padding: 48px 0 0; /* Padding para el contenido del sidebar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Habilita el scroll si el contenido es largo */
+}
+
+.nav-link {
+    color: #333;
+    transition: background-color .2s, color .2s;
+}
+
+.nav-link i {
+    margin-right: 8px;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: #0d6efd;
+    background-color: #e9ecef;
+}
+
+/* Contenido principal */
+main {
+    padding-top: 20px;
+}
+
+/* Estilos de las tarjetas */
+.card {
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+}
+
+.card-title {
+    color: #0d6efd;
+}
+
+/* Modal */
+.modal-body {
+    background-color: #f8f9fa;
+}
+
+#rating-stars .star {
+    font-size: 2rem;
+    color: #e9ecef;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+#rating-stars .star:hover,
+#rating-stars .star.filled {
+    color: #ffc107;
+}
+
+/* Ajustes para la cabecera fija */
+body {
+    padding-top: 70px; /* Ajusta este valor si la altura de tu cabecera cambia */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Asegura que la cabecera esté por encima de todo */
+}
+
+/* Ocultar la sidebar en pantallas pequeñas */
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        height: auto;
+        padding-top: 0;
+    }
+    main {
+        margin-left: 0 !important;
+    }
+    body {
+        padding-top: 0;
+    }
+    header {
+        position: static;
+    }
+}
