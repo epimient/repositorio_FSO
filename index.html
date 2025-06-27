@@ -65,23 +65,49 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="practicaModalLabel">Título de la Práctica</h5>
+                    <a href="#" id="open-practica-link" class="btn btn-outline-primary btn-sm ms-auto me-2" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-box-arrow-up-right"></i> Ver en nueva pestaña
+                    </a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Contenido de la práctica se cargará aquí -->
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <div>
-                        <h5>Calificación:</h5>
-                        <div id="rating-stars">
-                            <!-- Estrellas se generan aquí dinámicamente -->
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <!-- Columna para enviar nuevo feedback -->
+                        <div class="col-md-5 border-end">
+                            <h5>Deja tu opinión</h5>
+                            <div class="mb-2">
+                                <label for="name-box" class="form-label">Nombre:</label>
+                                <input type="text" id="name-box" class="form-control" placeholder="Tu nombre completo">
+                            </div>
+                            <div class="mb-2">
+                                <label for="course-box" class="form-label">Curso:</label>
+                                <input type="text" id="course-box" class="form-control" placeholder="Ej: 9no Semestre">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Calificación:</label>
+                                <div id="rating-stars">
+                                    <!-- Estrellas para nuevo feedback -->
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="comment-box" class="form-label">Comentario:</label>
+                                <textarea id="comment-box" class="form-control" rows="3" placeholder="Añade un comentario..."></textarea>
+                            </div>
+                            <button id="save-feedback-btn" class="btn btn-success mt-2">Guardar Opinión</button>
+                            <small id="feedback-status" class="text-muted ms-2"></small>
                         </div>
-                    </div>
-                    <div>
-                        <h5>Comentarios:</h5>
-                        <textarea id="comment-box" class="form-control" rows="3" placeholder="Añade un comentario..."></textarea>
-                        <button id="save-feedback-btn" class="btn btn-success mt-2">Guardar</button>
-                        <small id="feedback-status" class="text-muted ms-2"></small>
+
+                        <!-- Columna para mostrar comentarios existentes -->
+                        <div class="col-md-7">
+                            <h5>Opiniones de la comunidad</h5>
+                            <div id="comments-list" style="max-height: 400px; overflow-y: auto;">
+                                <!-- Los comentarios existentes se cargarán aquí -->
+                                <p class="text-muted">Aún no hay opiniones. ¡Sé el primero!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

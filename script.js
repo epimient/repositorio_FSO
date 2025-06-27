@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBody = practicaModal.querySelector('.modal-body');
     const ratingStarsContainer = document.getElementById('rating-stars');
     const commentBox = document.getElementById('comment-box');
+    const nameBox = document.getElementById('name-box');
+    const courseBox = document.getElementById('course-box');
+    const commentsList = document.getElementById('comments-list');
     const saveFeedbackBtn = document.getElementById('save-feedback-btn');
     const feedbackStatus = document.getElementById('feedback-status');
 
@@ -90,21 +93,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const practica = todasLasPracticas.find(p => p.id === currentPracticaId);
 
         modalTitle.textContent = practica.titulo;
-        modalBody.innerHTML = `<iframe src="${practica.archivo}" frameborder="0" style="width: 100%; height: 65vh;">Cargando...</iframe>`;
+        modalBody.innerHTML = `<iframe src="${practica.archivo}" frameborder="0" style="width: 100%; height: 80vh;">Cargando...</iframe>`;
 
-        // Resetear estado del feedback
+        // Configurar el enlace para abrir en nueva pestaña
+        const openPracticaLink = document.getElementById('open-practica-link');
+        openPracticaLink.href = practica.archivo;
+
+        // Resetear estado del formulario de feedback
         commentBox.value = '';
+        nameBox.value = '';
+        courseBox.value = '';
         feedbackStatus.textContent = '';
         saveFeedbackBtn.disabled = false;
-        renderStars(0); // Render inicial de estrellas vacías
+        renderStars(0); // Renderiza las estrellas para el *nuevo* feedback
+        commentsList.innerHTML = '<p class="text-muted">Cargando opiniones...</p>';
 
-        // Cargar datos de Firebase
-        database.ref('feedback/' + currentPracticaId).once('value').then((snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                currentRating = data.rating || 0;
-                commentBox.value = data.comment || '';
-                renderStars(currentRating);
+        // Cargar y mostrar todos los feedbacks de Firebase
+        const feedbackRef = database.ref('feedback/' + currentPracticaId);
+        feedbackRef.orderByChild('timestamp').on('value', (snapshot) => {
+            commentsList.innerHTML = ''; // Limpiar la lista antes de renderizar
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const feedback = childSnapshot.val();
+                    const commentElement = document.createElement('div');
+                    commentElement.classList.add('border-bottom', 'pb-2', 'mb-2');
+
+                    // Crear HTML para las estrellas de cada comentario guardado
+                    let starsHTML = '';
+                    for (let i = 1; i <= 5; i++) {
+                        starsHTML += `<i class="bi bi-star-fill ${i <= feedback.rating ? 'text-warning' : 'text-muted'}"></i>`;
+                    }
+
+                    commentElement.innerHTML = `
+                        <p class="mb-0">
+                            <strong>${feedback.name || 'Anónimo'}</strong>
+                            <span class="text-muted">- ${feedback.course || 'Sin curso'}</span>
+                        </p>
+                        <p class="mb-1">${feedback.comment}</p>
+                        <div>${starsHTML}</div>
+                        <small class="text-muted">${new Date(feedback.timestamp).toLocaleString()}</small>
+                    `;
+                    commentsList.prepend(commentElement); // Usar prepend para mostrar los más nuevos primero
+                });
+            } else {
+                commentsList.innerHTML = '<p class="text-muted">Aún no hay opiniones. ¡Sé el primero!</p>';
             }
         });
     });
@@ -130,25 +162,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Guardar feedback en Firebase
     saveFeedbackBtn.addEventListener('click', () => {
-        if (!currentPracticaId) return;
+        console.log('Botón de guardar presionado.');
+        console.log('Rating actual:', currentRating);
+        console.log('Nombre:', nameBox.value);
+        console.log('Curso:', courseBox.value);
+
+        // Validación más robusta
+        if (!nameBox.value.trim() || !courseBox.value.trim() || currentRating === 0) {
+            feedbackStatus.textContent = 'Debes rellenar nombre, curso y dar una calificación.';
+            feedbackStatus.style.color = 'red'; // Hacer el mensaje más visible
+            console.error('Validación fallida: Faltan campos.');
+            return;
+        }
 
         const feedbackData = {
+            name: nameBox.value.trim(),
+            course: courseBox.value.trim(),
             rating: currentRating,
-            comment: commentBox.value,
+            comment: commentBox.value.trim(),
             timestamp: new Date().toISOString()
         };
 
         feedbackStatus.textContent = 'Guardando...';
+        feedbackStatus.style.color = '#6c757d'; // Color por defecto de text-muted
         saveFeedbackBtn.disabled = true;
+        console.log('Enviando a Firebase:', feedbackData);
 
-        database.ref('feedback/' + currentPracticaId).set(feedbackData)
+        // Usar push() para crear un ID único para cada opinión
+        database.ref('feedback/' + currentPracticaId).push(feedbackData)
             .then(() => {
-                feedbackStatus.textContent = 'Guardado con éxito.';
-                setTimeout(() => { feedbackStatus.textContent = ''; }, 3000);
+                feedbackStatus.textContent = '¡Opinión guardada con éxito!';
+                feedbackStatus.style.color = 'green';
+                console.log('¡Éxito! Feedback guardado.');
+                // Limpiar campos después de guardar
+                nameBox.value = '';
+                courseBox.value = '';
+                commentBox.value = '';
+                renderStars(0);
+                setTimeout(() => {
+                    feedbackStatus.textContent = '';
+                }, 4000);
             })
             .catch((error) => {
-                feedbackStatus.textContent = 'Error al guardar.';
-                console.error(error);
+                feedbackStatus.textContent = 'Error al guardar. Revisa las reglas de la BD.';
+                feedbackStatus.style.color = 'red';
+                console.error('Error de Firebase:', error);
             })
             .finally(() => {
                 saveFeedbackBtn.disabled = false;
