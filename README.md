@@ -4,85 +4,53 @@ Un proyecto de **Ing. Eduardo Pimienta León**
 
 ---
 
-## Descripción
+## 📝 Descripción
 
-Este sitio web sirve como un repositorio centralizado para las prácticas de la materia de Fundamentos de Sistemas Operativos. La plataforma está diseñada para ser dinámica y fácil de mantener, permitiendo a los estudiantes visualizar el contenido de las prácticas, filtrarlas por categorías (Linux, Windows) y dejar calificaciones y comentarios.
+Este sitio web es un repositorio dinámico para las prácticas de la materia de **Fundamentos de Sistemas Operativos**. La plataforma permite a los estudiantes:
+- Visualizar el contenido de las prácticas desde un visualizador integrado.
+- Filtrar por categorías como **Linux** o **Windows**.
+- Buscar prácticas por título o descripción.
+- Calificar y dejar comentarios (feedback) sobre cada laboratorio.
 
-El contenido de cada práctica se gestiona directamente desde Google Docs, lo que permite que cualquier modificación en un documento se refleje automáticamente en el sitio web sin necesidad de volver a desplegarlo. Las calificaciones y comentarios se almacenan en tiempo real utilizando Firebase.
+La arquitectura del sitio está diseñada para ser 100% administrable desde la nube sin necesidad de editar código fuente para añadir contenido nuevo.
 
-## Tecnologías Utilizadas
+## 🚀 Tecnologías Utilizadas
 
-*   **Frontend:** HTML5, CSS3, JavaScript (ES6+)
-*   **Framework CSS:** Bootstrap 5
-*   **Iconos:** Bootstrap Icons
-*   **CMS (Contenido):** Google Docs (`Archivo > Publicar en la web`)
-*   **Base de Datos (Feedback):** Firebase Realtime Database
+*   **Frontend:** HTML5, CSS3 contemporáneo, JavaScript (ES6+).
+*   **Diseño:** Bootstrap 5 con una interfaz profesional y limpia.
+*   **Iconografía:** Bootstrap Icons.
+*   **Backend & CMS:** Google Apps Script (actuando como API).
+*   **Persistencia de Datos:** Google Sheets (almacena tanto la lista de prácticas como las opiniones de los estudiantes).
+*   **Contenido de Prácticas:** Google Docs (publicados para la web).
 
-## Cómo Añadir una Nueva Práctica Manualmente
+## 🛠️ Cómo Administrar el Repositorio
 
-Para añadir una nueva práctica al repositorio, sigue estos dos sencillos pasos.
+El sitio se alimenta de una hoja de cálculo de Google. Para realizar cambios, debes tener acceso al Google Sheet configurado en el `script.js`.
 
-### Paso 1: Publicar el Google Doc
+### 1. Añadir una Nueva Práctica
 
-Primero, necesitas hacer que tu documento de Google sea públicamente accesible en formato web.
+Para que una nueva práctica aparezca en el sitio, simplemente añade una nueva fila en la pestaña de **Prácticas** del Google Sheet con las siguientes columnas:
 
-1.  Abre el Google Doc que contiene tu nueva práctica.
-2.  Ve al menú superior y haz clic en `Archivo` -> `Compartir` -> `Publicar en la web`.
-3.  En la ventana que aparece, asegúrate de que esté seleccionada la pestaña `Enlace`.
-4.  Haz clic en el botón azul que dice **Publicar** y acepta la confirmación.
-5.  Copia el enlace que se genera. Este es el enlace que usaremos.
+| Columna | Descripción |
+| :--- | :--- |
+| **ID** | Un número único identificador (ej: 1, 2, 3...). |
+| **Título** | Nombre de la práctica. |
+| **Descripción** | Resumen breve de lo que se aprenderá. |
+| **Categoría** | Debe ser `linux` o `windows` (en minúsculas). |
+| **Archivo** | El enlace del Google Doc (ver sección abajo). |
+| **Objetivo** | El objetivo principal de aprendizaje. |
 
-### Paso 2: Añadir la Práctica al Fichero `script.js`
+### 2. Preparar el Google Doc de la Práctica
 
-A continuación, debes informar al sitio web sobre esta nueva práctica añadiéndola a la lista principal.
+Para que el documento sea visible dentro del sitio:
+1.  Abre el Google Doc.
+2.  Ve a `Archivo > Compartir > Publicar en la web`.
+3.  Selecciona la pestaña `Enlace` y haz clic en **Publicar**.
+4.  Copia la URL generada y pégala en la columna **Archivo** de tu Google Sheet.
 
-1.  Abre el archivo `script.js` en un editor de texto.
-2.  Localiza el array (la lista) llamado `todasLasPracticas` al principio del archivo.
-3.  Añade un nuevo objeto JavaScript al final de la lista. **Recuerda añadir una coma (`,`) después del último elemento existente** antes de añadir el nuevo.
+### 3. Sistema de Comentarios
 
-Usa la siguiente plantilla para tu nueva práctica:
+Las opiniones dejadas por los estudiantes en la web se guardan automáticamente en una pestaña llamada **Opiniones** (o similar) en tu Google Sheet. Esto permite un seguimiento fácil del feedback de la comunidad.
 
-```javascript
-{
-    id: 'practicaX', // IMPORTANTE: Usa un nuevo número (ej: 'practica5', 'practica6')
-    titulo: 'Título de la Nueva Práctica',
-    descripcion: 'Una descripción breve de lo que trata la práctica.',
-    archivo: 'URL_DE_GOOGLE_DOCS?embedded=true', // Pega aquí el enlace del Paso 1 y añade ?embedded=true al final
-    categoria: 'linux' // o 'windows', según corresponda
-},
-```
-
-**Ejemplo práctico:**
-
-Si el array `todasLasPracticas` se ve así:
-
-```javascript
-const todasLasPracticas = [
-    // ... otras prácticas aquí ...
-    {
-        id: 'practica4', /* ... */ categoria: 'linux'
-    }
-];
-```
-
-Lo modificarías para que se vea así (añadiendo la `practica5`):
-
-```javascript
-const todasLasPracticas = [
-    // ... otras prácticas aquí ...
-    {
-        id: 'practica4', /* ... */ categoria: 'linux'
-    }, // <-- ¡No olvides esta coma!
-    {
-        id: 'practica5',
-        titulo: 'Nueva Práctica sobre Redes',
-        descripcion: 'Configuración de redes en sistemas Linux y Windows.',
-        archivo: 'https://docs.google.com/document/d/e/2PACX-1v.../pub?embedded=true',
-        categoria: 'linux'
-    } // <-- El último elemento de la lista no lleva coma
-];
-```
-
-4.  Guarda el archivo `script.js`.
-
-¡Eso es todo! Si tienes el proyecto en tu computadora, la nueva práctica aparecerá al recargar la página. Si lo has subido a GitHub Pages, solo necesitas subir el archivo `script.js` actualizado para que los cambios se reflejen en línea.
+---
+© 2026 - Docente: Ing. Eduardo Pimienta Leon - Corporación Universidad Americana
