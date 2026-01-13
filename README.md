@@ -53,4 +53,4 @@ Para que el documento sea visible dentro del sitio:
 Las opiniones dejadas por los estudiantes en la web se guardan automáticamente en una pestaña llamada **Opiniones** (o similar) en tu Google Sheet. Esto permite un seguimiento fácil del feedback de la comunidad.
 
 ---
-© 2026 - Docente: Ing. Eduardo Pimienta Leon - Corporación Universidad Americana
+© 2026 - Docente: Ing. Eduardo Pimienta Leon - Corporación Universitaria Americana
