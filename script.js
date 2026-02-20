@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Configuración de Google Sheets ---
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4TdMfZiWnIY9Z-AQtX5QBU5E6TwSMqnvhDo0tUWXqvZgycbX8hVcsmQrExYnmfQsOAg/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_CIlCf-ldLinYHWZZOSaImmn2J64Rs5fhR7s1aNcyve9zDkf2ntB65YS5HqDe6VgN/exec';
 
     // --- Datos de las Prácticas ---
     let todasLasPracticas = [];
@@ -122,8 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderPracticas(todasLasPracticas);
             }
         } catch (e) {
-            console.error(e);
-            practicasGrid.innerHTML = '<p class="text-danger text-center">Error de conexión.</p>';
+            console.error("Error detallado de conexión:", e);
+            practicasGrid.innerHTML = `
+                <div class="col-12 text-center text-danger">
+                    <p><i class="bi bi-exclamsion-triangle"></i> Error de conexión con Google Sheets.</p>
+                    <small>${e.message}</small><br>
+                    <button class="btn btn-sm btn-outline-secondary mt-2" onclick="location.reload()">Reintentar</button>
+                </div>`;
         }
     };
 
