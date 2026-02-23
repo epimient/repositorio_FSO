@@ -1,4 +1,4 @@
-# Repositorio de Prácticas: Fundamentos de Sistemas Operativos
+# Repositorio de Prácticas de Laboratorio
 
 Un proyecto de **Ing. Eduardo Pimienta León**
 
@@ -6,9 +6,9 @@ Un proyecto de **Ing. Eduardo Pimienta León**
 
 ## 📝 Descripción
 
-Este sitio web es un repositorio dinámico para las prácticas de la materia de **Fundamentos de Sistemas Operativos**. La plataforma permite a los estudiantes:
+Este sitio web es un repositorio dinámico para las prácticas de laboratorio, abarcando áreas como **Linux** y **Arduino**. La plataforma permite a los estudiantes:
 - Visualizar el contenido de las prácticas desde un visualizador integrado.
-- Filtrar por categorías como **Linux** o **Windows**.
+- Filtrar por categorías como **Linux** o **Arduino**.
 - Buscar prácticas por título o descripción.
 - Calificar y dejar comentarios (feedback) sobre cada laboratorio.
 
@@ -36,7 +36,7 @@ Para que una nueva práctica aparezca en el sitio, simplemente añade una nueva 
 | **ID** | Un número único identificador (ej: 1, 2, 3...). |
 | **Título** | Nombre de la práctica. |
 | **Descripción** | Resumen breve de lo que se aprenderá. |
-| **Categoría** | Debe ser `linux` o `windows` (en minúsculas). |
+| **Categoría** | Debe ser `linux` o `arduino` (en minúsculas). |
 | **Archivo** | El enlace del Google Doc (ver sección abajo). |
 | **Objetivo** | El objetivo principal de aprendizaje. |
 
@@ -50,7 +50,16 @@ Para que el documento sea visible dentro del sitio:
 
 ### 3. Sistema de Comentarios
 
-Las opiniones dejadas por los estudiantes en la web se guardan automáticamente en una pestaña llamada **Opiniones** (o similar) en tu Google Sheet. Esto permite un seguimiento fácil del feedback de la comunidad.
+Las opiniones dejadas por los estudiantes en la web se guardan automáticamente en una pestaña llamada **feedback** en tu Google Sheet. Esta pestaña debe tener las siguientes columnas en la primera fila:
+
+| Columna | Descripción |
+| :--- | :--- |
+| **practicaId** | ID de la práctica calificada. |
+| **name** | Nombre del estudiante. |
+| **course** | Curso o semestre. |
+| **rating** | Calificación (1-5). |
+| **comment** | Comentario detallado. |
+| **timestamp** | Fecha y hora del envío. |
 
 ---
 © 2026 - Docente: Ing. Eduardo Pimienta Leon - Corporación Universitaria Americana

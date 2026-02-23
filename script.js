@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Configuración de Google Sheets ---
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_CIlCf-ldLinYHWZZOSaImmn2J64Rs5fhR7s1aNcyve9zDkf2ntB65YS5HqDe6VgN/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCVTp_edZfs-FcampE-_EmIEkK0Hz1_Z066UFjtNTFwjmKIu3-Qr4lnH8IERznEKw7/exec';
 
     // --- Datos de las Prácticas ---
     let todasLasPracticas = [];
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h5 class="card-title">${practica.titulo}</h5>
                         <p class="card-text flex-grow-1">${practica.descripcion}</p>
                         <div class="mt-2 text-end">
-                            <span class="badge ${practica.categoria === 'linux' ? 'bg-primary' : 'bg-success'}">
+                            <span class="badge ${practica.categoria === 'linux' ? 'bg-primary' : practica.categoria === 'arduino' ? 'bg-warning text-dark' : 'bg-secondary'}">
                                 ${practica.categoria.toUpperCase()}
                             </span>
                         </div>
@@ -104,8 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const inicializarApp = async () => {
         practicasGrid.innerHTML = '<div class="col-12 text-center my-5"><div class="spinner-border text-primary"></div></div>';
         try {
+            console.log("Intentando conectar con:", GOOGLE_SCRIPT_URL);
             const resp = await fetch(`${GOOGLE_SCRIPT_URL}?type=practicas`);
+
+            if (!resp.ok) throw new Error(`HTTP error! status: ${resp.status}`);
+
             const json = await resp.json();
+            console.log("Datos recibidos:", json);
+
             if (json.status === 'success') {
                 todasLasPracticas = json.data.map(p => {
                     const n = {};
@@ -120,13 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     };
                 });
                 renderPracticas(todasLasPracticas);
+            } else {
+                throw new Error(json.message || "Error desconocido en el script de Google");
             }
         } catch (e) {
             console.error("Error detallado de conexión:", e);
             practicasGrid.innerHTML = `
                 <div class="col-12 text-center text-danger">
-                    <p><i class="bi bi-exclamsion-triangle"></i> Error de conexión con Google Sheets.</p>
+                    <p><i class="bi bi-exclamation-triangle"></i> Error de conexión con Google Sheets.</p>
                     <small>${e.message}</small><br>
+                    <p class="small text-muted mt-2">Asegúrate de que el script esté publicado como "Cualquier persona".</p>
                     <button class="btn btn-sm btn-outline-secondary mt-2" onclick="location.reload()">Reintentar</button>
                 </div>`;
         }
